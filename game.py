@@ -15,38 +15,26 @@ class Game:
                 "totalWon": 0,
                 "totalLost": 0,
                 "totalTied": 0
-
             }],
             "dealerWon": 0,
             "dealerLost": 0,
             "dealerTied": 0,
-
         }
 
-
-
-        
-
-        
-
     def newGameInit(self):
-        # TODO: deal 2 cards to each of the players, and one card to self then wait
         for player in self.players:
             self.dealer.dealCardsTo(player, 2)
             self.dealer.dealCardsTo(self.dealer)
-        print("init game")
 
-
+    # One Game - ends until all players have won / tied or lost
     def newGamePlay(self):
         # while there are players left, keep playing
         while len(self.players) > 0:
+            # TODO: Create main game logic
             self.players.pop()
             print("play game")
 
-
-
     def gameLoop(self):
- 
         while self.currentRound < self.roundsToSimulate:
             self.newGameInit()
             self.newGamePlay()
@@ -54,7 +42,6 @@ class Game:
 
     def start(self):
         self.gameLoop()
-
 
     def printHello(self) -> None:
         print("hello from game")
