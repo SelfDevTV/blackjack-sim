@@ -1,10 +1,10 @@
-from person import Person
+import utils
+import person
 
-class Player(Person):
+
+class Player(person.Person):
     def __init__(self) -> None:
-        Person.__init__(self)
+        person.Person.__init__(self)
         self.id = 1
-        self.hello()
-
-    def hello(self):
-        print("hello from player")
+        self.currentAction: utils.Action = utils.Action.HIT
+        self.splitCount = 0

@@ -1,7 +1,6 @@
-from game import Game
-from deck import Deck
+import game
 
 
-game = Game()
+game = game.Game()
 
 game.start()

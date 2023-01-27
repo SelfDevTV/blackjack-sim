@@ -1,13 +1,16 @@
-from person import Person
+import person
+from deck import Deck
 
-class Dealer(Person):
+
+class Dealer(person.Person):
     def __init__(self, deck) -> None:
-        Person.__init__(self)
-        self.deck = deck
+        person.Person.__init__(self)
+        self.deck: Deck = deck
         self.nextCard = None
 
-    def dealCardsTo(self, target: Person, amount=1):
+    def dealCardsTo(self, target: person.Person, amount: int = 1):
+        if self.deck.get_cardsLeft() < amount:
+            self.deck.resetDeck()
+
         cards = self.deck.getCards(amount)
         target.receiveCards(cards)
-
-    

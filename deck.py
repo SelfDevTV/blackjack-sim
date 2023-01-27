@@ -1,45 +1,38 @@
 import json
-import random 
+import random
+from card import Card
 
-
-CARD_DICT = {
-    "2": 2,
-    "3": 3,
-    "4": 4,
-    "5": 5,
-    "6": 6,
-    "7": 7,
-    "8": 8,
-    "9": 9,
-    "10": 10,
-    "J": 10,
-    "K": 10,
-    "Q": 10,
-    "A": 11
-}
 
 class Deck:
     def __init__(self) -> None:
         self.cards = []
         self._cardsLeft = len(self.cards)
+        self.shuffleCount = 0
         self.generateCards()
         self.shuffleCards()
 
     def get_cardsLeft(self):
         return len(self.cards)
 
-
     def generateCards(self):
+        self.shuffleCount += 1
+        self.cards = []
         with open('deck.json') as d:
             cardsJson = json.load(d)
             for card in cardsJson:
-                self.cards.append(card)
-            
+                newCard = Card(card["value"], card["suit"])
+                self.cards.append(newCard)
+
+    def resetDeck(self):
+        self.generateCards()
+        self.shuffleCards()
 
     def shuffleCards(self):
+
         random.shuffle(self.cards)
 
     # Returns array of card(s) or empty array if deck would be empty
+
     def getCards(self, amount=1):
         cardsToReturn = []
         if len(self.cards) >= amount:
