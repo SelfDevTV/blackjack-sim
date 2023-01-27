@@ -1,6 +1,8 @@
-import player
+
+
 import enum
 import card
+# import player
 
 
 class Action(enum.Enum):
@@ -12,7 +14,7 @@ class Action(enum.Enum):
     BUSTED = "Busted"
 
 
-def cardsHaveAce(cards: list[card.Card]) -> bool:
+def cardsHaveAce(cards: list["card.Card"]) -> bool:
     for card in cards:
         if card.value == "A":
             return True
@@ -20,7 +22,7 @@ def cardsHaveAce(cards: list[card.Card]) -> bool:
     return False
 
 
-def cardsShouldBeSplit(cards: list[card.Card], dealerUpCard: card.Card) -> bool:
+def cardsShouldBeSplit(cards: list["card.Card"], dealerUpCard: "card.Card") -> bool:
     if len(cards) != 2:
         return False
 
@@ -98,21 +100,22 @@ def cardsShouldBeSplit(cards: list[card.Card], dealerUpCard: card.Card) -> bool:
     return False
 
 
-def dealerShouldRevealCards(players: list["player.Player"]) -> bool:
+def dealerShouldRevealCards(players) -> bool:
     for player in players:
-        if player.currentAction != Action.STAND or player.currentAction != Action.SURRENDER or player.currentAction != Action.BLACKJACK:
-            return False
+        for hand in player.cardsOnTable:
+            if hand.currentAction != Action.STAND or hand.currentAction != Action.SURRENDER or hand.currentAction != Action.BLACKJACK:
+                return False
     return True
 
 
-def getTotalValueOfCards(cards: list[card.Card]) -> int:
+def getTotalValueOfCards(cards: list["card.Card"]) -> int:
     totalValOfCards = 0
     for card in cards:
         totalValOfCards += card.numValue
     return totalValOfCards
 
 
-def getTotalValueOfCardsAceAsOne(cards: list[card.Card]) -> int:
+def getTotalValueOfCardsAceAsOne(cards: list["card.Card"]) -> int:
     totalValOfcards = 0
     for card in cards:
         if card.value == "A":

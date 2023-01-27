@@ -1,39 +1,49 @@
 
 
-import card
+from hand import Hand
+from card import Card
+import uuid
 
 
 class Person:
 
     def __init__(self) -> None:
-        self._cardsOnTable: list[card.Card] = []
+        self.cardsOnTable: list[Hand] = []
         self.totalValueOnTable = 0
         self.wonCount = 0
         self.tieCount = 0
         self.lostCount = 0
         self.blackjacks = 0
+        self.createHand()
 
-    def hasBlackJack(self) -> bool:
-        if len(self._cardsOnTable) == 2 and self.totalValueOnTable == 21:
-            return True
-        else:
-            return False
+    # for all hands
+    def getTotalValueOnTable(self):
+        value = 0
+        for hand in self.cardsOnTable:
+            for card in hand.cards:
+                value += card.numValue
 
-    def get_cardsOnTable(self):
-        return self._cardsOnTable
+        return value
 
-    def printCardsOnTable(self):
-        print("Cards on Table:")
-        for card in self._cardsOnTable:
-            print(f"{card.value} of {card.suit}")
-
-    def receiveCards(self, cards: list[card.Card]):
-        self._cardsOnTable.extend(cards)
-        for card in cards:
-            self.totalValueOnTable += card.numValue
+    def createHand(self, cards: list[Card] = []):
+        newHand = Hand(cards)
+        self.cardsOnTable.append(newHand)
 
     def resetCards(self):
-        self._cardsOnTable = []
-        self.totalValueOnTable = 0
+        for hand in self.cardsOnTable:
+            hand.resetCardsInHand()
 
-    cardsOnTable = property(get_cardsOnTable)
+    def printCardsOnTable(self):
+        print("All Cards on Table for Person:")
+        for hand in self.cardsOnTable:
+            for card in hand.cards:
+                print(f"{card.value} of {card.suit}")
+
+    def receiveCards(self, cards: list[Card], targetHandId: uuid.UUID | None = None):
+        if targetHandId == None:
+            self.cardsOnTable[0].receiveCardsInHand(cards)
+            return
+
+        for hand in self.cardsOnTable:
+            if hand.id == targetHandId:
+                hand.receiveCardsInHand(cards)
