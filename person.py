@@ -30,8 +30,10 @@ class Person:
         self.cardsOnTable.append(newHand)
 
     def resetCards(self):
-        for hand in self.cardsOnTable:
-            hand.resetCardsInHand()
+        self.cardsOnTable = []
+        self.createHand()
+        # for hand in self.cardsOnTable:
+        #     hand.resetCardsInHand()
 
     def printCardsOnTable(self):
         print("All Cards on Table for Person:")

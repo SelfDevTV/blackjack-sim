@@ -163,7 +163,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
     match dealerUpCard.numValue:
         case 2:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=13)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=18)
@@ -172,7 +171,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
 
         case 3:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=13)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=18)
@@ -180,7 +178,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 4:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=12)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=18)
@@ -188,7 +185,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 5:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=12)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=18)
@@ -196,7 +192,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 6:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=12)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=18)
@@ -204,7 +199,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 7:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=17)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=18)
@@ -212,7 +206,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 8:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=17)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=18)
@@ -220,7 +213,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 9:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=17)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=19)
@@ -228,7 +220,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 10:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=17)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=19)
@@ -236,7 +227,6 @@ def calculateNextMove(playerCards: list[card.Card], dealerUpCard: card.Card) -> 
                 return Action.SPLIT
         case 11:
             if not playerHasAce and not playerHasPair:
-                # TODO: Always return a action and also make it so it takes one name argument instead
                 return calculateHardTotal(numValOfCards, standAt=17)
             elif playerHasAce and not playerHasPair:
                 return calculateSoftTotal(numValOfCards, standAt=19)

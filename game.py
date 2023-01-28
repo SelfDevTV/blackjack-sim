@@ -2,13 +2,14 @@ import deck
 import dealer
 import player
 import utils
+import uuid
 
 
 class Game:
-    def __init__(self, roundsToSimulate=1000, numOfPlayers=1) -> None:
+    def __init__(self, roundsToSimulate=10000, numOfPlayers=1) -> None:
         self.roundsToSimulate = roundsToSimulate
         self.currentRound = 0
-        self.players = [player.Player()]
+        self.players = self.initPlayers(numOfPlayers)
         self.finishedPlayers: list[player.Player] = []
         self.deck = deck.Deck()
         self.dealer = dealer.Dealer(self.deck)
@@ -26,14 +27,21 @@ class Game:
             "dealerBlackJack": 0
         }
 
+    def initPlayers(self, numOfPlayers: int):
+        players = []
+        for i in range(numOfPlayers):
+            newPlayer = player.Player()
+            players.append(newPlayer)
+        return players
+
     def newGameInit(self):
         # clear table and init game
         print("clear table and init game")
         self.dealer.resetCards()
+        self.dealer.dealCardsTo(self.dealer)
         for player in self.players:
             player.resetCards()
             self.dealer.dealCardsTo(player, 2)
-            self.dealer.dealCardsTo(self.dealer)
 
     def playersTurn(self):
         print("players turn")
@@ -49,7 +57,6 @@ class Game:
                     nextMove: utils.Action = utils.calculateNextMove(
                         hand.get_cardsInHand(), self.dealer.getUpCard())
                     print(f"Next move extracted: {nextMove}")
-                    # TODO: don't add player to finished if he still has some hands pending
                     match nextMove:
                         case utils.Action.HIT:
                             hand.currentAction = nextMove
@@ -74,15 +81,13 @@ class Game:
                             newSplit = [hand.cards.pop()]
                             player.createHand(newSplit)
                             hand.currentAction = utils.Action.HIT
-
-                    print(f"Next move is: {nextMove.value}")
             self.finishedPlayers.append(self.players.pop(idx))
             # self.finishedPlayers.append(self.players.pop(idx))
-        # TODO: Figure out bug here - might have something to do with the finished hand array
-        print("hello world")
 
     def dealerTurn(self):
         print("dealer turn")
+        print("dealer cards: ")
+        self.dealer.printCardsOnTable()
 
         if len(self.finishedPlayers) == 0:
             print("no more finished players")
@@ -94,7 +99,6 @@ class Game:
             for hand in player.finishedHands:
                 print(hand.currentAction)
 
-                # TODO: why pop error when action is stand?
                 if utils.Action.STAND == hand.currentAction:
                     while self.dealer.getTotalValueOnTable() < 17:
                         self.dealer.dealCardsTo(self.dealer)
@@ -144,7 +148,6 @@ class Game:
                         self.dealer.printCardsOnTable()
                         print("It's a tie")
                 elif utils.Action.BLACKJACK == hand.currentAction:
-                    # TODO: Figure out actions when player has blackjack
                     if self.dealer.hasBlackJack():
                         player.tieCount += 1
                         player.blackjacks += 1
@@ -174,6 +177,51 @@ class Game:
         self.players = self.finishedPlayers.copy()
         self.finishedPlayers = []
 
+    def printStatistics(self):
+        pass
+        # TODO: Statistic for dealer
+
+        # TODO: General game statistic
+
+        for player in self.finishedPlayers:
+            pass
+            # TODO: print Statistic for every player
+
+    def getStatistics(self):
+        # make list for serialization
+        # TODO: get percent rate of all players combined
+        players = []
+        for player in self.finishedPlayers:
+            playerDict = {
+                "id": uuid.uuid4(),
+                "wins": player.wonCount,
+                "looses": player.lostCount,
+                "ties": player.tieCount,
+                "blackjack": player.blackjacks,
+                "splits": player.splitCount,
+                "winRateInPct": (player.wonCount / (self.currentRound + player.splitCount)) * 100,
+                "tieRateInPct": (player.tieCount / (self.currentRound + player.splitCount)) * 100,
+                "looseRateInPct": (player.lostCount / (self.currentRound + player.splitCount)) * 100
+            }
+            players.append(playerDict)
+
+        stats = {}
+        stats["roundsSimulatedPerPlayer"] = self.roundsToSimulate
+        stats["roundsSimulatedTotal"] = self.roundsToSimulate * \
+            len(self.finishedPlayers)
+        stats["playerCount"] = len(self.finishedPlayers)
+        stats["dealerStats"] = {
+            "wins": self.dealer.wonCount,
+            "looses": self.dealer.lostCount,
+            "ties": self.dealer.tieCount,
+            "blackjack": self.dealer.blackjacks
+        },
+        stats["players"] = players
+
+        return stats
+
+        # TODO: Return a dict / object with all statistics
+
     # One Game - ends until all players have won / tied or lost
 
     def newGamePlay(self):
@@ -194,13 +242,16 @@ class Game:
 
         self.finishedPlayers = self.players.copy()
         self.players = []
+        self.printStatistics()
         print(
             f"players count for players {len(self.players)}, count for finish players: {len(self.finishedPlayers)}")
-        print(
-            f"Game is now over, total player wins: {self.finishedPlayers[0].wonCount}, total player lost {self.finishedPlayers[0].lostCount}, total player tied {self.finishedPlayers[0].tieCount}, total player splitted {self.finishedPlayers[0].splitCount}")
 
-    def start(self):
+        for player in self.finishedPlayers:
+            print(
+                f"Game is now over, total player wins: {player.wonCount}, total player lost {player.lostCount}, total player tied {player.tieCount}, total player splitted {player.splitCount}")
+            print(
+                f"% win rate: {(player.wonCount / (self.currentRound + player.splitCount)) * 100}")
+
+    def start(self) -> int:
         self.gameLoop()
-
-    def printHello(self) -> None:
-        print("hello from game")
+        return self.dealer.wonCount
