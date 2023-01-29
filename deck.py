@@ -1,6 +1,10 @@
 import json
 import random
 from card import Card
+from pathlib import Path
+
+THIS_FOLDER = Path(__file__).parent.resolve()
+deckCsvPath = THIS_FOLDER/"static/deck.json"
 
 
 class Deck:
@@ -17,7 +21,7 @@ class Deck:
     def generateCards(self):
         self.shuffleCount += 1
         self.cards = []
-        with open('deck.json') as d:
+        with open(deckCsvPath) as d:
             cardsJson = json.load(d)
             for card in cardsJson:
                 newCard = Card(card["value"], card["suit"])
