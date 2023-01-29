@@ -204,7 +204,9 @@ class Game:
                 "looseRateInPct": (player.lostCount / (self.currentRound + player.splitCount)) * 100
             }
             players.append(playerDict)
-
+        def sortByWins(e):
+            return e['wins']
+        players.sort(key=sortByWins, reverse=True)
         stats = {}
         stats["roundsSimulatedPerPlayer"] = self.roundsToSimulate
         stats["roundsSimulatedTotal"] = self.roundsToSimulate * \
